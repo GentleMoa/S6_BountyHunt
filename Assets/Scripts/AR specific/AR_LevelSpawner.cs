@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
@@ -17,6 +17,11 @@ public class AR_LevelSpawner : MonoBehaviour
     //Serialized Variables
     [SerializeField] private GameObject placementIndicator;
     [SerializeField] private GameObject levelMap;
+    [SerializeField] private GameObject player;
+
+    //Events and Delegates
+    public event Action d_levelMapSpawned;
+    public static event Action staticTestEvent;
 
     void Start()
     {
@@ -30,6 +35,9 @@ public class AR_LevelSpawner : MonoBehaviour
         }
 
         placementIndicator.SetActive(false);
+
+        //Subscribing 'SpawnPlayer' to the d_levelMapSpawned delegate
+        d_levelMapSpawned += SpawnPlayer;
     }
 
     void Update()
@@ -37,6 +45,8 @@ public class AR_LevelSpawner : MonoBehaviour
         UpdatePlacementPose();
         UpdatePlacementIndicator();
     }
+
+    // - - - Function Archive - - - //
 
     private void UpdatePlacementPose()
     {
@@ -89,6 +99,24 @@ public class AR_LevelSpawner : MonoBehaviour
             Instantiate(levelMap, _placementPose.position, _placementPose.rotation);
 
             _levelStartPlaced = true;
+
+            if(d_levelMapSpawned!= null)
+            {
+                d_levelMapSpawned();
+            }
         }
+    }
+
+    public void SpawnPlayer()
+    {
+        //Spawning the player
+        Instantiate(player, _placementPose.position + new Vector3(0.0f, 0.01f, 0.0f), _placementPose.rotation);
+    }
+
+
+    private void OnDestroy()
+    {
+        //Unsubscribing 'SpawnPlayer' to the d_levelMapSpawned delegate
+        d_levelMapSpawned -= SpawnPlayer;
     }
 }
