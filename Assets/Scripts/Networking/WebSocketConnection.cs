@@ -2,9 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using NativeWebSocket;
+using TMPro;
 
 public class WebSocketConnection : MonoBehaviour
 {
+    //Giving the possibility to print logs into a text field in the canvas
+    [SerializeField] private TMP_Text debugLogUI;
+
     private WebSocket _webSocket;
     private string _serverUrl = "ws://bountyar.uber.space:42761/NodeJSServer"; // REPLACE [username] & [port] with yours
     private int _serverErrorCode;
@@ -34,6 +38,9 @@ public class WebSocketConnection : MonoBehaviour
     private void OnOpen()
     {
         print("Connection opened");
+
+        //Giving the possibility to print logs into a text field in the canvas
+        debugLogUI.text = "Connection opened";
     }
 
     private void OnMessage(byte[] incomingBytes)
