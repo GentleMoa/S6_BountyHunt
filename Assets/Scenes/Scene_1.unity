@@ -652,6 +652,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1324655238}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &511339567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1076,6 +1088,7 @@ GameObject:
   - component: {fileID: 1324655237}
   - component: {fileID: 1324655236}
   - component: {fileID: 1324655235}
+  - component: {fileID: 1324655238}
   m_Layer: 0
   m_Name: ScriptHolder
   m_TagString: Untagged
@@ -1108,7 +1121,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   placementIndicator: {fileID: 691690371}
-  levelMap: {fileID: 351207650427189965, guid: 5e46d8352d5c5394aa514d06deb1e239, type: 3}
+  levelMap: {fileID: 8669052529357407513, guid: b10601fa6769abf40bb737894ae50ec6,
+    type: 3}
   player: {fileID: 1808463770207467683, guid: 955f5c59ed5727942bdc9c3a56b8f53c, type: 3}
 --- !u!4 &1324655237
 Transform:
@@ -1125,6 +1139,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1324655238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1324655234}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e53d49d8042152348b15807266fc29f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemy: {fileID: 7213088849516290598, guid: c2ec21d092145c441aba080169d1da9e, type: 3}
+  enemySpawnRate: 1
 --- !u!1 &1665508814
 GameObject:
   m_ObjectHideFlags: 0
