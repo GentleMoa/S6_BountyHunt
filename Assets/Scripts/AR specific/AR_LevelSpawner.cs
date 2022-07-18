@@ -21,7 +21,6 @@ public class AR_LevelSpawner : MonoBehaviour
 
     //Events and Delegates
     public event Action d_levelMapSpawned;
-    public static event Action staticTestEvent;
 
     void Start()
     {

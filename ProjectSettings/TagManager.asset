@@ -6,6 +6,7 @@ TagManager:
   tags:
   - RaycastOrigin
   - EnemySpawnArea
+  - EnemySpawnArea_Corner
   layers:
   - Default
   - TransparentFX
