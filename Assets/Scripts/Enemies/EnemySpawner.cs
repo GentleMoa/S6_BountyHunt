@@ -6,15 +6,48 @@ public class EnemySpawner : MonoBehaviour
 {
     //Private Variables
     private GameObject _raycastOrigin;
+    private AR_LevelSpawner ar_levelSpawner;
+    private float _raycastOriginHeight;
+    private List<GameObject> enemySpawnAreaCorners = new List<GameObject>();
 
     //Serialized Variables
+    //[SerializeField] private GameObject [] enemySpawnAreaCorners;
     [SerializeField] private GameObject enemy;
     [SerializeField] private float enemySpawnRate = 1.5f;
 
+
     void Start()
     {
+        //Finding the AR_LevelSpawner script by type (there is only one of those)
+        ar_levelSpawner = GameObject.FindObjectOfType<AR_LevelSpawner>();
+
+        if (ar_levelSpawner != null)
+        {
+            //Subscribing functions to the ar_levelSpawner.d_levelMapSpawned event
+            ar_levelSpawner.d_levelMapSpawned += FindPlayAreaRelatedReferences;
+            ar_levelSpawner.d_levelMapSpawned += RunPlayAreaRelatedLogic;
+        }
+        else
+        {
+            Debug.Log("The AR_LevelSpawner Script was not found!!");
+        }
+    }
+
+    private void FindPlayAreaRelatedReferences()
+    {
+        //Finding the _raycastOrigin empty by tag
         _raycastOrigin = GameObject.FindGameObjectWithTag("RaycastOrigin");
 
+        //Save the _raycastOrigin current y position
+        _raycastOriginHeight = _raycastOrigin.transform.position.y;
+
+        //Populate the enemySpawnAreaCorners List with the 4 Enemy_SpawnArea_Corners
+        enemySpawnAreaCorners.AddRange(GameObject.FindGameObjectsWithTag("EnemySpawnArea_Corner"));
+    }
+
+    private void RunPlayAreaRelatedLogic()
+    {
+        //Calling the function to shoot a raycast and maybe spawn an enemy repeatately
         InvokeRepeating("DesignateEnemySpawnPos", 0.0f, enemySpawnRate);
     }
 
@@ -46,6 +79,13 @@ public class EnemySpawner : MonoBehaviour
         //For Debugging
         Debug.Log("Reshuffling RaycastOrigin!");
 
-        _raycastOrigin.transform.position = new Vector3(Random.Range(-1.25f, 1.25f), 0.35f, Random.Range(-1.25f, 1.25f));
+        _raycastOrigin.transform.position = new Vector3(Random.Range(enemySpawnAreaCorners[0].transform.position.x, enemySpawnAreaCorners[1].transform.position.x), _raycastOriginHeight, Random.Range(enemySpawnAreaCorners[0].transform.position.z, enemySpawnAreaCorners[3].transform.position.z));
+    }
+
+    private void OnDestroy()
+    {
+        //Unsubscribing functions from events
+        ar_levelSpawner.d_levelMapSpawned -= FindPlayAreaRelatedReferences;
+        ar_levelSpawner.d_levelMapSpawned -= RunPlayAreaRelatedLogic;
     }
 }
