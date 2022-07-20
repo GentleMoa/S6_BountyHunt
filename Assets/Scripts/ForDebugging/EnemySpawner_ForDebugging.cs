@@ -3,11 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemySpawner : MonoBehaviour
+public class EnemySpawner_ForDebugging : MonoBehaviour
 {
     //Private Variables
     private GameObject _raycastOrigin;
-    private AR_LevelSpawner ar_levelSpawner;
+    private AR_LevelSpawner_ForDebugging ar_levelSpawner_ForDebugging;
     private float _raycastOriginHeight;
 
     //Serialized Variables
@@ -23,13 +23,13 @@ public class EnemySpawner : MonoBehaviour
     void Start()
     {
         //Finding the AR_LevelSpawner script by type (there is only one of those)
-        ar_levelSpawner = GameObject.FindObjectOfType<AR_LevelSpawner>();
+        ar_levelSpawner_ForDebugging = GameObject.FindObjectOfType<AR_LevelSpawner_ForDebugging>();
 
-        if (ar_levelSpawner != null)
+        if (ar_levelSpawner_ForDebugging != null)
         {
             //Subscribing functions to the ar_levelSpawner.d_levelMapSpawned event
-            ar_levelSpawner.D_levelMapSpawned += FindPlayAreaRelatedReferences;
-            ar_levelSpawner.D_levelMapSpawned += RunPlayAreaRelatedLogic;
+            ar_levelSpawner_ForDebugging.D_levelMapSpawned += FindPlayAreaRelatedReferences;
+            ar_levelSpawner_ForDebugging.D_levelMapSpawned += RunPlayAreaRelatedLogic;
         }
         else
         {
@@ -92,7 +92,7 @@ public class EnemySpawner : MonoBehaviour
     private void OnDestroy()
     {
         //Unsubscribing functions from events
-        ar_levelSpawner.D_levelMapSpawned -= FindPlayAreaRelatedReferences;
-        ar_levelSpawner.D_levelMapSpawned -= RunPlayAreaRelatedLogic;
+        ar_levelSpawner_ForDebugging.D_levelMapSpawned -= FindPlayAreaRelatedReferences;
+        ar_levelSpawner_ForDebugging.D_levelMapSpawned -= RunPlayAreaRelatedLogic;
     }
 }
