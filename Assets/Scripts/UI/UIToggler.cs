@@ -16,7 +16,7 @@ public class UIToggler : MonoBehaviour
         //Subscribing 'ToggleUI' to AR_LevelSpawner's delegate
         if (_arLevelSpawner != null)
         {
-            _arLevelSpawner.d_levelMapSpawned += ToggleUI;
+            _arLevelSpawner.D_levelMapSpawned += ToggleUI;
         }
     }
 
@@ -27,7 +27,7 @@ public class UIToggler : MonoBehaviour
 
     private void OnDestroy()
     {
-        _arLevelSpawner.d_levelMapSpawned -= ToggleUI;
+        _arLevelSpawner.D_levelMapSpawned -= ToggleUI;
     }
 }
 

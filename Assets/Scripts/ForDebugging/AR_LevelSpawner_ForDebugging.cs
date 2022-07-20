@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 
-public class AR_LevelSpawner : MonoBehaviour
+public class AR_LevelSpawner_ForDebugging : MonoBehaviour
 {
     //Private Variables
     private ARSessionOrigin _arOrigin;
@@ -33,7 +33,7 @@ public class AR_LevelSpawner : MonoBehaviour
             Debug.Log("One of the following components is missing: 'AR Session Origin', 'AR Camera', 'AR Raycast Manager'");
         }
 
-        placementIndicator.SetActive(false);
+        //placementIndicator.SetActive(false);
 
         //Subscribing 'SpawnPlayer' to the d_levelMapSpawned delegate
         D_levelMapSpawned += SpawnPlayer;
@@ -84,22 +84,22 @@ public class AR_LevelSpawner : MonoBehaviour
             //the position and rotation of the placement indicator adapts the position and rotation of the placement pose.
             placementIndicator.transform.SetPositionAndRotation(_placementPose.position, _placementPose.rotation);
         }
-        else if ((!_placementPoseIsValid || _levelStartPlaced == true))
-        {
-            placementIndicator.SetActive(false);
-        }
+        //else if ((!_placementPoseIsValid || _levelStartPlaced == true))
+        //{
+        //    placementIndicator.SetActive(false);
+        //}
     }
 
     public void SpawnLevel()
     {
-        if (_levelStartPlaced == false && _placementPoseIsValid == true)
+        if (_levelStartPlaced == false)
         {
             //Spawning the level map
             Instantiate(levelMap, _placementPose.position, _placementPose.rotation);
 
             _levelStartPlaced = true;
 
-            if(D_levelMapSpawned != null)
+            if (D_levelMapSpawned != null)
             {
                 D_levelMapSpawned();
             }
