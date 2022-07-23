@@ -8,6 +8,7 @@ TagManager:
   - EnemySpawnArea
   - EnemySpawnArea_Corner
   - Enemy
+  - PlacementIndicator
   layers:
   - Default
   - TransparentFX

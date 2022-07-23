@@ -30,7 +30,7 @@ public class PlayerController_IG11 : MonoBehaviour
         //Walking
         if (_joystick.Horizontal != 0 || _joystick.Vertical != 0)
         {
-            _playerMovementSpeed = 0.5f;
+            _playerMovementSpeed = 0.25f;
 
             //If using animator bools, set them here!
             _animator.SetBool("isWalking", true);
@@ -43,7 +43,7 @@ public class PlayerController_IG11 : MonoBehaviour
             if (_joystick.Horizontal > 0.7 || _joystick.Vertical > 0.7)
             {
                 //Setting the walking speed
-                _playerMovementSpeed = 0.6f;
+                _playerMovementSpeed = 0.35f;
 
                 //If using animator bools, set them here!
             }

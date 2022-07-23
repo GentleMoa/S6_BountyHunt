@@ -13,30 +13,33 @@ public class AR_LevelSpawner : MonoBehaviour
     private bool _placementPoseIsValid;
     private Pose _placementPose;
     private bool _levelStartPlaced;
-
-    //Serialized Variables
-    [SerializeField] private GameObject placementIndicator;
-    [SerializeField] private GameObject levelMap;
-    [SerializeField] private GameObject player;
+    private GameObject _placementIndicator;
+    private GameObject _levelMap;
+    private GameObject _player;
 
     //Events and Delegates
     public event Action D_levelMapSpawned;
+
+    void Awake()
+    {
+        GameManager.OnGameStateChanged += SpawnLevel;
+    }
 
     void Start()
     {
         _arOrigin = FindObjectOfType<ARSessionOrigin>();
         _arCamera = _arOrigin.transform.GetChild(0).GetComponent<Camera>();
         _arRayManager = _arOrigin.GetComponent<ARRaycastManager>();
+        _placementIndicator = GameObject.FindGameObjectWithTag("PlacementIndicator");
+        _levelMap = Settings.Instance.levelMap;
+        _player = Settings.Instance.player;
 
         if (_arOrigin == null || _arCamera == null || _arRayManager == null)
         {
             Debug.Log("One of the following components is missing: 'AR Session Origin', 'AR Camera', 'AR Raycast Manager'");
         }
 
-        placementIndicator.SetActive(false);
-
-        //Subscribing 'SpawnPlayer' to the d_levelMapSpawned delegate
-        D_levelMapSpawned += SpawnPlayer;
+        _placementIndicator.SetActive(false);
     }
 
     void Update()
@@ -73,49 +76,89 @@ public class AR_LevelSpawner : MonoBehaviour
             var cameraBearing = new Vector3(cameraForward.x, 0, cameraForward.z).normalized;
             _placementPose.rotation = Quaternion.LookRotation(cameraBearing);
         }
-
     }
 
     private void UpdatePlacementIndicator()
     {
         if (_placementPoseIsValid && _levelStartPlaced == false)
         {
-            placementIndicator.SetActive(true);
+            _placementIndicator.SetActive(true);
             //the position and rotation of the placement indicator adapts the position and rotation of the placement pose.
-            placementIndicator.transform.SetPositionAndRotation(_placementPose.position, _placementPose.rotation);
+            _placementIndicator.transform.SetPositionAndRotation(_placementPose.position, _placementPose.rotation);
         }
         else if ((!_placementPoseIsValid || _levelStartPlaced == true))
         {
-            placementIndicator.SetActive(false);
+            if (_placementIndicator.activeSelf == true)
+            {
+                _placementIndicator.SetActive(false);
+            }
         }
     }
 
-    public void SpawnLevel()
+    public void InitializeGameSetup()
     {
-        if (_levelStartPlaced == false && _placementPoseIsValid == true)
+        //Update the GameState
+        GameManager.Instance.UpdateGameState(GameState.PlayAreaFound);
+    }
+
+    public void SpawnLevel(GameState state)
+    {
+        if (state == GameState.PlayAreaFound)
         {
-            //Spawning the level map
-            Instantiate(levelMap, _placementPose.position, _placementPose.rotation);
-
-            _levelStartPlaced = true;
-
-            if(D_levelMapSpawned != null)
+#if UNITY_ANDROID
+            if (_levelStartPlaced == false && _placementPoseIsValid == true)
             {
-                D_levelMapSpawned();
+                //Spawning the level map
+                Instantiate(_levelMap, _placementPose.position, _placementPose.rotation);
+
+                //Spawning the player
+                SpawnPlayer();
+
+                _levelStartPlaced = true;
+
+                //Update the GameState
+                GameManager.Instance.UpdateGameState(GameState.Gameplay);
+
+                if (D_levelMapSpawned != null)
+                {
+                    D_levelMapSpawned();
+                }
             }
+#endif
+
+#if UNITY_EDITOR
+            if (_levelStartPlaced == false)
+            {
+                //Spawning the level map
+                Instantiate(_levelMap, Vector3.zero, Quaternion.identity);
+
+                //Spawning the player
+                SpawnPlayer();
+
+                _levelStartPlaced = true;
+
+                //Update the GameState
+                GameManager.Instance.UpdateGameState(GameState.Gameplay);
+
+                if (D_levelMapSpawned != null)
+                {
+                    D_levelMapSpawned();
+                }
+            }
+#endif
         }
     }
 
     public void SpawnPlayer()
     {
         //Spawning the player
-        Instantiate(player, _placementPose.position + new Vector3(0.0f, 0.01f, 0.0f), _placementPose.rotation);
+        Instantiate(_player, _placementPose.position + new Vector3(0.0f, 0.01f, 0.0f), _placementPose.rotation);
     }
 
 
-    private void OnDestroy()
+    private void OnDisable()
     {
-        //Unsubscribing 'SpawnPlayer' to the d_levelMapSpawned delegate
-        D_levelMapSpawned -= SpawnPlayer;
+        //Unsubscribing functions from events
+        GameManager.OnGameStateChanged -= SpawnLevel;
     }
 }
