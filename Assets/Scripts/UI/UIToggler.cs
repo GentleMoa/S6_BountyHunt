@@ -5,19 +5,33 @@ using BountyHunt.ExtensionMethods;
 
 public class UIToggler : MonoBehaviour
 {
-    [SerializeField] GameObject[] uiToToggle;
+    //Private Variables
     private AR_LevelSpawner _arLevelSpawner;
+    private AR_LevelSpawner_ForDebugging _ar_LevelSpawner_ForDebugging;
+
+    //Serialized Variables
+    [SerializeField] GameObject[] uiToToggle;
 
     // Start is called before the first frame update
     void Start()
     {
         _arLevelSpawner = FindObjectOfType<AR_LevelSpawner>();
+        _ar_LevelSpawner_ForDebugging = FindObjectOfType<AR_LevelSpawner_ForDebugging>();
 
-        //Subscribing 'ToggleUI' to AR_LevelSpawner's delegate
-        if (_arLevelSpawner != null)
+        if (_arLevelSpawner == null)
+        {
+            _ar_LevelSpawner_ForDebugging.D_levelMapSpawned += ToggleUI;
+        }
+        else if (_ar_LevelSpawner_ForDebugging == null)
         {
             _arLevelSpawner.D_levelMapSpawned += ToggleUI;
         }
+
+        //Subscribing 'ToggleUI' to AR_LevelSpawner's delegate
+        //if (_arLevelSpawner != null)
+        //{
+        //    _arLevelSpawner.D_levelMapSpawned += ToggleUI;
+        //}
     }
 
     private void ToggleUI()
@@ -27,7 +41,14 @@ public class UIToggler : MonoBehaviour
 
     private void OnDestroy()
     {
-        _arLevelSpawner.D_levelMapSpawned -= ToggleUI;
+        if (_arLevelSpawner == null)
+        {
+            _ar_LevelSpawner_ForDebugging.D_levelMapSpawned -= ToggleUI;
+        }
+        else if (_ar_LevelSpawner_ForDebugging == null)
+        {
+            _arLevelSpawner.D_levelMapSpawned -= ToggleUI;
+        }
     }
 }
 

@@ -10,6 +10,12 @@ public class Targeting : MonoBehaviour
     private Vector3 _targetDirection;
     private EnemySpawner _enemySpawner;
     private EnemySpawner_ForDebugging _enemySpawner_ForDebugging;
+    private GameObject _lastEnemyHit;
+
+    //Serialized Variables
+    [SerializeField] private Transform ig11_raycastOrign;
+    [SerializeField] private Material matEnemy;
+    [SerializeField] private Material matEnemyInLOS;
 
     void Start()
     {
@@ -29,30 +35,58 @@ public class Targeting : MonoBehaviour
 
     void Update()
     {
-        FindTargetsInLineOfSight();
+        CalculateTargetsInLineOfSight();
+        UpdateEnemiesMat();
+        UpdateEnemiesInLOSMat();
     }
 
-    private void FindTargetsInLineOfSight()
+    private void CalculateTargetsInLineOfSight()
     {
         foreach (GameObject enemy in enemies)
         {
             RaycastHit hit;
-            _targetDirection = (enemy.transform.position - gameObject.transform.position).normalized;
+            _targetDirection = (enemy.transform.position - ig11_raycastOrign.position).normalized;
 
-            if (Physics.Raycast(gameObject.transform.position, _targetDirection, out hit))
+            if (Physics.Raycast(ig11_raycastOrign.position, _targetDirection, out hit))
             {
                 if (hit.transform.gameObject.tag == "Enemy")
                 {
-                    enemiesInLOS.Add(hit.transform.gameObject);
-
-                    //For Debugging
-                    Debug.Log("Enemy was hit by targeting raycast: " + hit.transform.gameObject.name);
+                    if (!enemiesInLOS.Contains(hit.transform.gameObject))
+                    {
+                        enemiesInLOS.Add(hit.transform.gameObject);
+                    }
                 }
+
+                //For Debugging
+                //Debug.Log("Enemy was hit by targeting raycast: " + hit.transform.gameObject.name);
             }
 
             //For Debugging
-            float _debugRayLength = 1.5f;
-            Debug.DrawRay(gameObject.transform.position, _targetDirection * _debugRayLength, Color.red);
+            Debug.DrawRay(ig11_raycastOrign.position, _targetDirection, Color.red);
+            //Debug.Log("Raycast hit: " + hit.transform.gameObject.name);
+        }
+
+        foreach (GameObject enemyInLOS in enemiesInLOS)
+        {
+            RaycastHit hit;
+            _targetDirection = (enemyInLOS.transform.position - ig11_raycastOrign.position).normalized;
+
+            if (Physics.Raycast(ig11_raycastOrign.position, _targetDirection, out hit))
+            {
+                Debug.Log("Raycast hit: " + hit.transform.gameObject.name);
+
+                if (hit.transform.gameObject.tag == "Enemy")
+                {
+                    _lastEnemyHit = hit.transform.gameObject;
+                }
+                else if (hit.transform.gameObject.tag != "Enemy")
+                {
+                    if (enemiesInLOS.Contains(_lastEnemyHit))
+                    {
+                        enemiesInLOS.Remove(_lastEnemyHit);
+                    }
+                }
+            }
         }
     }
 
@@ -60,9 +94,33 @@ public class Targeting : MonoBehaviour
     {
         enemies.Clear();
         enemies.AddRange(GameObject.FindGameObjectsWithTag("Enemy"));
+    }
 
-        //For Debugging
-        Debug.Log("enemis count: " + enemies.Count + " enemiesInLOS count: " + enemiesInLOS.Count);
+    private void UpdateEnemiesMat()
+    {
+        foreach (GameObject enemy in enemies)
+        {
+            Renderer _renderer;
+            _renderer = enemy.GetComponent<Renderer>();
+
+            if (_renderer.material != matEnemy)
+            {
+                _renderer.material = matEnemy;
+            }
+        }
+    }
+    private void UpdateEnemiesInLOSMat()
+    {
+        foreach (GameObject enemyInLOS in enemiesInLOS)
+        {
+            Renderer _renderer;
+            _renderer = enemyInLOS.GetComponent<Renderer>();
+
+            if (_renderer.material != matEnemyInLOS)
+            {
+                _renderer.material = matEnemyInLOS;
+            }
+        }
     }
 
     private void OnDestroy()

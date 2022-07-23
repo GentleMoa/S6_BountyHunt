@@ -66,7 +66,7 @@ public class EnemySpawner_ForDebugging : MonoBehaviour
             if (hit.transform.gameObject.tag == "EnemySpawnArea")
             {
                 //For Debugging
-                Debug.Log("Raycast shot and hit EnemySpawnArea!");
+                //Debug.Log("Raycast shot and hit EnemySpawnArea!");
 
                 Instantiate(enemy, hit.point + new Vector3(0.0f, 0.1f, 0.0f), Quaternion.identity);
 
@@ -76,7 +76,7 @@ public class EnemySpawner_ForDebugging : MonoBehaviour
             else
             {
                 //For Debugging
-                Debug.Log("Raycast shot but did not hit EnemySpawnArea!");
+                //Debug.Log("Raycast shot but did not hit EnemySpawnArea!");
             }
         }
     }
@@ -84,7 +84,7 @@ public class EnemySpawner_ForDebugging : MonoBehaviour
     private void ReshuffleRaycastOrigin()
     {
         //For Debugging
-        Debug.Log("Reshuffling RaycastOrigin!");
+        //Debug.Log("Reshuffling RaycastOrigin!");
 
         _raycastOrigin.transform.position = new Vector3(UnityEngine.Random.Range(enemySpawnAreaCorners[0].transform.position.x, enemySpawnAreaCorners[1].transform.position.x), _raycastOriginHeight, UnityEngine.Random.Range(enemySpawnAreaCorners[0].transform.position.z, enemySpawnAreaCorners[3].transform.position.z));
     }
