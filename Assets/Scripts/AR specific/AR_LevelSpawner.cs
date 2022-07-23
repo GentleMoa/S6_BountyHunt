@@ -17,9 +17,6 @@ public class AR_LevelSpawner : MonoBehaviour
     private GameObject _levelMap;
     private GameObject _player;
 
-    //Events and Delegates
-    public event Action D_levelMapSpawned;
-
     void Awake()
     {
         GameManager.OnGameStateChanged += SpawnLevel;
@@ -117,12 +114,7 @@ public class AR_LevelSpawner : MonoBehaviour
                 _levelStartPlaced = true;
 
                 //Update the GameState
-                GameManager.Instance.UpdateGameState(GameState.Gameplay);
-
-                if (D_levelMapSpawned != null)
-                {
-                    D_levelMapSpawned();
-                }
+                GameManager.Instance.UpdateGameState(GameState.PrepareEnemySpawning);
             }
 #endif
 
@@ -138,12 +130,7 @@ public class AR_LevelSpawner : MonoBehaviour
                 _levelStartPlaced = true;
 
                 //Update the GameState
-                GameManager.Instance.UpdateGameState(GameState.Gameplay);
-
-                if (D_levelMapSpawned != null)
-                {
-                    D_levelMapSpawned();
-                }
+                GameManager.Instance.UpdateGameState(GameState.PrepareEnemySpawning);
             }
 #endif
         }

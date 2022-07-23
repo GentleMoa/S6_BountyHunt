@@ -5,39 +5,35 @@ using UnityEngine;
 public class Targeting : MonoBehaviour
 {
     //Private Variables
-    [SerializeField] private List<GameObject> enemies = new List<GameObject>();
-    [SerializeField] private List<GameObject> enemiesInLOS = new List<GameObject>();
+    
     private Vector3 _targetDirection;
     private EnemySpawner _enemySpawner;
-    private EnemySpawner_ForDebugging _enemySpawner_ForDebugging;
     private GameObject _lastEnemyHit;
+    private Material _matEnemy;
+    private Material _matEnemyInLOS;
+    private Transform _ig11_raycastOrign;
 
     //Serialized Variables
-    [SerializeField] private Transform ig11_raycastOrign;
-    [SerializeField] private Material matEnemy;
-    [SerializeField] private Material matEnemyInLOS;
+    [SerializeField] private List<GameObject> enemies = new List<GameObject>();
+    [SerializeField] private List<GameObject> enemiesInLOS = new List<GameObject>();
 
     void Start()
     {
         _enemySpawner = FindObjectOfType<EnemySpawner>();
-        _enemySpawner_ForDebugging = FindObjectOfType<EnemySpawner_ForDebugging>();
+        _ig11_raycastOrign = GameObject.FindGameObjectWithTag("IG11_RaycastOrigin").GetComponent<Transform>();
 
-        if (_enemySpawner == null)
-        {
-            _enemySpawner_ForDebugging.D_enemySpawned += UpdateEnemiesList;
-        }
-        else if (_enemySpawner_ForDebugging == null)
+        //The D_enemySpawned event is triggered each time an enemy is spawned, every time that happens we want to update the enemies list
+        if (_enemySpawner != null)
         {
             _enemySpawner.D_enemySpawned += UpdateEnemiesList;
         }
     }
 
-
     void Update()
     {
         CalculateTargetsInLineOfSight();
-        UpdateEnemiesMat();
-        UpdateEnemiesInLOSMat();
+        //UpdateEnemiesMat();
+        //UpdateEnemiesInLOSMat();
     }
 
     private void CalculateTargetsInLineOfSight()
@@ -45,9 +41,9 @@ public class Targeting : MonoBehaviour
         foreach (GameObject enemy in enemies)
         {
             RaycastHit hit;
-            _targetDirection = (enemy.transform.position - ig11_raycastOrign.position).normalized;
+            _targetDirection = (enemy.transform.position - _ig11_raycastOrign.position).normalized;
 
-            if (Physics.Raycast(ig11_raycastOrign.position, _targetDirection, out hit))
+            if (Physics.Raycast(_ig11_raycastOrign.position, _targetDirection, out hit))
             {
                 if (hit.transform.gameObject.tag == "Enemy")
                 {
@@ -62,16 +58,16 @@ public class Targeting : MonoBehaviour
             }
 
             //For Debugging
-            Debug.DrawRay(ig11_raycastOrign.position, _targetDirection, Color.red);
+            Debug.DrawRay(_ig11_raycastOrign.position, _targetDirection, Color.red);
             //Debug.Log("Raycast hit: " + hit.transform.gameObject.name);
         }
 
         foreach (GameObject enemyInLOS in enemiesInLOS)
         {
             RaycastHit hit;
-            _targetDirection = (enemyInLOS.transform.position - ig11_raycastOrign.position).normalized;
+            _targetDirection = (enemyInLOS.transform.position - _ig11_raycastOrign.position).normalized;
 
-            if (Physics.Raycast(ig11_raycastOrign.position, _targetDirection, out hit))
+            if (Physics.Raycast(_ig11_raycastOrign.position, _targetDirection, out hit))
             {
                 Debug.Log("Raycast hit: " + hit.transform.gameObject.name);
 
@@ -103,9 +99,9 @@ public class Targeting : MonoBehaviour
             Renderer _renderer;
             _renderer = enemy.GetComponent<Renderer>();
 
-            if (_renderer.material != matEnemy)
+            if (_renderer.material != _matEnemy)
             {
-                _renderer.material = matEnemy;
+                _renderer.material = _matEnemy;
             }
         }
     }
@@ -116,22 +112,15 @@ public class Targeting : MonoBehaviour
             Renderer _renderer;
             _renderer = enemyInLOS.GetComponent<Renderer>();
 
-            if (_renderer.material != matEnemyInLOS)
+            if (_renderer.material != _matEnemyInLOS)
             {
-                _renderer.material = matEnemyInLOS;
+                _renderer.material = _matEnemyInLOS;
             }
         }
     }
 
     private void OnDisable()
     {
-        if (_enemySpawner == null)
-        {
-            _enemySpawner_ForDebugging.D_enemySpawned -= UpdateEnemiesList;
-        }
-        else if (_enemySpawner_ForDebugging == null)
-        {
-            _enemySpawner.D_enemySpawned -= UpdateEnemiesList;
-        }
+        _enemySpawner.D_enemySpawned -= UpdateEnemiesList;
     }
 }

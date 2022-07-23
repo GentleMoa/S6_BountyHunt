@@ -9,6 +9,7 @@ TagManager:
   - EnemySpawnArea_Corner
   - Enemy
   - PlacementIndicator
+  - IG11_RaycastOrigin
   layers:
   - Default
   - TransparentFX

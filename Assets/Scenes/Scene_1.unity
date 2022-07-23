@@ -1046,7 +1046,7 @@ GameObject:
   - component: {fileID: 1324655236}
   - component: {fileID: 1324655238}
   m_Layer: 0
-  m_Name: ScriptHolder
+  m_Name: GameLogicHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1091,9 +1091,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e53d49d8042152348b15807266fc29f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 7213088849516290598, guid: c2ec21d092145c441aba080169d1da9e, type: 3}
-  enemySpawnRate: 1
-  enemySpawnAreaCorners: []
 --- !u!1 &1665508814
 GameObject:
   m_ObjectHideFlags: 0
@@ -1376,7 +1373,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68ae2afeb9d46ac40b916b9c1bf4dd08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiToToggle:
+  uiToToggle_Button_SpawnLevel:
   - {fileID: 511339564}
 --- !u!1 &4418557381259255729
 GameObject:

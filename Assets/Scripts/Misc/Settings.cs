@@ -20,10 +20,18 @@ public class Settings : MonoBehaviour
 
     //Reference Archive
 
-    //For Script: AR_LevelSpawner
+    //For Script: AR_LevelSpawner --> On "GameLogicHolder" GameObject, in "Scene_1"
     [Header ("AR_LevelSpawner")]
     public GameObject levelMap;
     public GameObject player;
 
+    //For Script: EnemySpawner --> On "GameLogicHolder" GameObject, in "Scene_1"
+    [Header("EnemySpawner")]
+    public GameObject enemy;
+
+    //For Script: Targeting --> On "IG11_Player" Prefab, spawned in "Scene_1"
+    [Header ("Targeting")]
+    public Material matEnemy;
+    public Material matEnemyInLOS;
 
 }

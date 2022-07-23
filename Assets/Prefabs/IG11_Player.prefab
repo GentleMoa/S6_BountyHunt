@@ -1993,11 +1993,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 572476ce8dc38cc4bbecb22d0f4d11c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ig11_raycastOrign: {fileID: 4781440974786504217}
   enemies: []
   enemiesInLOS: []
-  ig11_raycastOrign: {fileID: 4781440974786504217}
-  matEnemy: {fileID: 2100000, guid: 3247d9dd081a60647aaf25f25e9e485a, type: 2}
-  matEnemyInLOS: {fileID: 2100000, guid: 99ed58c3fed13cc40bdc681c9edc521e, type: 2}
 --- !u!1 &1877217291739011310
 GameObject:
   m_ObjectHideFlags: 0
@@ -6677,7 +6675,7 @@ GameObject:
   - component: {fileID: 4781440974786504217}
   m_Layer: 0
   m_Name: IG11_RaycastOrigin
-  m_TagString: Untagged
+  m_TagString: IG11_RaycastOrigin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
