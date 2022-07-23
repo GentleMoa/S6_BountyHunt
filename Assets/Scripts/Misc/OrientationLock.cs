@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class OrientationLock : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         Screen.orientation = ScreenOrientation.LandscapeLeft;
+
+        DontDestroyOnLoad(this.gameObject);
     }
 }

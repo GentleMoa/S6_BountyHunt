@@ -13,6 +13,11 @@ public class WebSocketConnection : MonoBehaviour
     private string _serverUrl = "ws://bountyar.uber.space:42761/NodeJSServer"; // REPLACE [username] & [port] with yours
     private int _serverErrorCode;
 
+    void Awake()
+    {
+        DontDestroyOnLoad(this.gameObject);
+    }
+
     async void Start()
     {
         _webSocket = new WebSocket(_serverUrl);

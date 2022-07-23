@@ -123,7 +123,7 @@ public class Targeting : MonoBehaviour
         }
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
         if (_enemySpawner == null)
         {

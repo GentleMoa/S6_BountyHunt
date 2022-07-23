@@ -89,7 +89,7 @@ public class EnemySpawner : MonoBehaviour
         _raycastOrigin.transform.position = new Vector3(UnityEngine.Random.Range(enemySpawnAreaCorners[0].transform.position.x, enemySpawnAreaCorners[1].transform.position.x), _raycastOriginHeight, UnityEngine.Random.Range(enemySpawnAreaCorners[0].transform.position.z, enemySpawnAreaCorners[3].transform.position.z));
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
         //Unsubscribing functions from events
         ar_levelSpawner.D_levelMapSpawned -= FindPlayAreaRelatedReferences;

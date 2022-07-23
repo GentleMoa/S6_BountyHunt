@@ -26,12 +26,6 @@ public class UIToggler : MonoBehaviour
         {
             _arLevelSpawner.D_levelMapSpawned += ToggleUI;
         }
-
-        //Subscribing 'ToggleUI' to AR_LevelSpawner's delegate
-        //if (_arLevelSpawner != null)
-        //{
-        //    _arLevelSpawner.D_levelMapSpawned += ToggleUI;
-        //}
     }
 
     private void ToggleUI()
@@ -39,16 +33,16 @@ public class UIToggler : MonoBehaviour
         uiToToggle.ToggleGameObjectArray(false);
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
-        if (_arLevelSpawner == null)
-        {
-            _ar_LevelSpawner_ForDebugging.D_levelMapSpawned -= ToggleUI;
-        }
-        else if (_ar_LevelSpawner_ForDebugging == null)
-        {
-            _arLevelSpawner.D_levelMapSpawned -= ToggleUI;
-        }
+        //if (_arLevelSpawner == null)
+        //{
+        //    _ar_LevelSpawner_ForDebugging.D_levelMapSpawned -= ToggleUI;
+        //}
+        //else if (_ar_LevelSpawner_ForDebugging == null)
+        //{
+        //    _arLevelSpawner.D_levelMapSpawned -= ToggleUI;
+        //}
     }
 }
 
