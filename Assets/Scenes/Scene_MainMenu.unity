@@ -286,11 +286,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81c63025fa9013b4ab8eeead3b70de1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  placementIndicator: {fileID: 8251995590477619732, guid: 74724895b730fa04492ada9242a1744b,
-    type: 3}
   levelMap: {fileID: 8669052529357407513, guid: b10601fa6769abf40bb737894ae50ec6,
     type: 3}
   player: {fileID: 1808463770207467683, guid: 955f5c59ed5727942bdc9c3a56b8f53c, type: 3}
+  enemy: {fileID: 7213088849516290598, guid: c2ec21d092145c441aba080169d1da9e, type: 3}
+  matEnemy: {fileID: 2100000, guid: 3247d9dd081a60647aaf25f25e9e485a, type: 2}
+  matEnemyInLOS: {fileID: 2100000, guid: 99ed58c3fed13cc40bdc681c9edc521e, type: 2}
 --- !u!4 &139090103
 Transform:
   m_ObjectHideFlags: 0
@@ -304,7 +305,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &504934285
 GameObject:
@@ -349,7 +350,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &512197964
 GameObject:
@@ -746,7 +747,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &971543997
 GameObject:

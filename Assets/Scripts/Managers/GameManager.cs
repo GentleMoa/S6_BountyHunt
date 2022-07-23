@@ -46,6 +46,10 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.PlayAreaFound:
                 break;
+            case GameState.PrepareEnemySpawning:
+                break;
+            case GameState.BeginEnemySpawning:
+                break;
             case GameState.Gameplay:
                 break;
             case GameState.Ending:
@@ -54,7 +58,6 @@ public class GameManager : MonoBehaviour
 
         OnGameStateChanged?.Invoke(newState);
     }
-
 }
 
 //GameStates
@@ -64,6 +67,8 @@ public enum GameState
     MainMenu,
     FindPlayArea,
     PlayAreaFound,
+    PrepareEnemySpawning,
+    BeginEnemySpawning,
     Gameplay,
     Ending
 }

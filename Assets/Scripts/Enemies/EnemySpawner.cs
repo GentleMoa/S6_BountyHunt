@@ -9,50 +9,52 @@ public class EnemySpawner : MonoBehaviour
     private GameObject _raycastOrigin;
     private AR_LevelSpawner ar_levelSpawner;
     private float _raycastOriginHeight;
-
-    //Serialized Variables
-    [SerializeField] private GameObject enemy;
-    [SerializeField] private float enemySpawnRate = 1.5f;
-
-    //Public Variables
-    public List<GameObject> enemySpawnAreaCorners = new List<GameObject>();
+    private GameObject _enemy;
+    private float _enemySpawnRate = 1.5f;
+    private List<GameObject> enemySpawnAreaCorners = new List<GameObject>();
 
     //Events and Delegates 
     public event Action D_enemySpawned;
 
+    void Awake()
+    {
+        GameManager.OnGameStateChanged += FindPlayAreaRelatedReferences;
+        GameManager.OnGameStateChanged += RunPlayAreaRelatedLogic;
+    }
+
     void Start()
     {
-        //Finding the AR_LevelSpawner script by type (there is only one of those)
-        ar_levelSpawner = GameObject.FindObjectOfType<AR_LevelSpawner>();
+        _enemy = Settings.Instance.enemy;
+    }
 
-        if (ar_levelSpawner != null)
+    private void FindPlayAreaRelatedReferences(GameState state)
+    {
+        if (state == GameState.PrepareEnemySpawning)
         {
-            //Subscribing functions to the ar_levelSpawner.d_levelMapSpawned event
-            ar_levelSpawner.D_levelMapSpawned += FindPlayAreaRelatedReferences;
-            ar_levelSpawner.D_levelMapSpawned += RunPlayAreaRelatedLogic;
-        }
-        else
-        {
-            Debug.Log("The AR_LevelSpawner Script was not found!!");
+            //Finding the _raycastOrigin empty by tag
+            _raycastOrigin = GameObject.FindGameObjectWithTag("RaycastOrigin");
+
+            //Save the _raycastOrigin current y position
+            _raycastOriginHeight = _raycastOrigin.transform.position.y;
+
+            //Populate the enemySpawnAreaCorners List with the 4 Enemy_SpawnArea_Corners
+            enemySpawnAreaCorners.AddRange(GameObject.FindGameObjectsWithTag("EnemySpawnArea_Corner"));
+
+            //Update the GameState
+            GameManager.Instance.UpdateGameState(GameState.BeginEnemySpawning);
         }
     }
 
-    private void FindPlayAreaRelatedReferences()
+    private void RunPlayAreaRelatedLogic(GameState state)
     {
-        //Finding the _raycastOrigin empty by tag
-        _raycastOrigin = GameObject.FindGameObjectWithTag("RaycastOrigin");
+        if (state == GameState.BeginEnemySpawning)
+        {
+            //Calling the function to shoot a raycast and maybe spawn an enemy repeatately
+            InvokeRepeating("DesignateEnemySpawnPos", 0.0f, _enemySpawnRate);
 
-        //Save the _raycastOrigin current y position
-        _raycastOriginHeight = _raycastOrigin.transform.position.y;
-
-        //Populate the enemySpawnAreaCorners List with the 4 Enemy_SpawnArea_Corners
-        enemySpawnAreaCorners.AddRange(GameObject.FindGameObjectsWithTag("EnemySpawnArea_Corner"));
-    }
-
-    private void RunPlayAreaRelatedLogic()
-    {
-        //Calling the function to shoot a raycast and maybe spawn an enemy repeatately
-        InvokeRepeating("DesignateEnemySpawnPos", 0.0f, enemySpawnRate);
+            //Update the GameState
+            GameManager.Instance.UpdateGameState(GameState.Gameplay);
+        }
     }
 
     private void DesignateEnemySpawnPos()
@@ -65,34 +67,24 @@ public class EnemySpawner : MonoBehaviour
         {
             if (hit.transform.gameObject.tag == "EnemySpawnArea")
             {
-                //For Debugging
-                //Debug.Log("Raycast shot and hit EnemySpawnArea!");
-
-                Instantiate(enemy, hit.point + new Vector3(0.0f, 0.1f, 0.0f), Quaternion.identity);
+                //Spawning a enemy
+                Instantiate(_enemy, hit.point + new Vector3(0.0f, 0.1f, 0.0f), Quaternion.identity);
 
                 //Calling the D_enemySpawned delegate/event
                 D_enemySpawned();
-            }
-            else
-            {
-                //For Debugging
-                //Debug.Log("Raycast shot but did not hit EnemySpawnArea!");
             }
         }
     }
 
     private void ReshuffleRaycastOrigin()
     {
-        //For Debugging
-        //Debug.Log("Reshuffling RaycastOrigin!");
-
         _raycastOrigin.transform.position = new Vector3(UnityEngine.Random.Range(enemySpawnAreaCorners[0].transform.position.x, enemySpawnAreaCorners[1].transform.position.x), _raycastOriginHeight, UnityEngine.Random.Range(enemySpawnAreaCorners[0].transform.position.z, enemySpawnAreaCorners[3].transform.position.z));
     }
 
     private void OnDisable()
     {
         //Unsubscribing functions from events
-        ar_levelSpawner.D_levelMapSpawned -= FindPlayAreaRelatedReferences;
-        ar_levelSpawner.D_levelMapSpawned -= RunPlayAreaRelatedLogic;
+        GameManager.OnGameStateChanged -= FindPlayAreaRelatedReferences;
+        GameManager.OnGameStateChanged -= RunPlayAreaRelatedLogic;
     }
 }
