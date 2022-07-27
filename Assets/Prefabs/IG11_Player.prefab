@@ -1818,8 +1818,8 @@ GameObject:
   - component: {fileID: 1320439364942127641}
   - component: {fileID: 7088293368177742899}
   - component: {fileID: 7949249400358892476}
-  - component: {fileID: 5288327510827142888}
   - component: {fileID: 8724733599296199040}
+  - component: {fileID: 72639676239625577}
   - component: {fileID: 9187082151086255525}
   m_Layer: 0
   m_Name: IG11_Player
@@ -1949,18 +1949,6 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &5288327510827142888
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1808463770207467683}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 912b8d4de2ae9e74c82a13fc4e8c9807, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!95 &8724733599296199040
 Animator:
   serializedVersion: 4
@@ -1981,6 +1969,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &72639676239625577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1808463770207467683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 194e65f1fb60192409fc552623687307, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerMovementSpeed: 0.45
 --- !u!114 &9187082151086255525
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1993,7 +1994,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 572476ce8dc38cc4bbecb22d0f4d11c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ig11_raycastOrign: {fileID: 4781440974786504217}
   enemies: []
   enemiesInLOS: []
 --- !u!1 &1877217291739011310
