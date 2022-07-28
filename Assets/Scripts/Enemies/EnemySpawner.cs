@@ -7,24 +7,17 @@ public class EnemySpawner : MonoBehaviour
 {
     //Private Variables
     private GameObject _raycastOrigin;
-    private AR_LevelSpawner ar_levelSpawner;
     private float _raycastOriginHeight;
-    private GameObject _enemy;
     private float _enemySpawnRate = 1.5f;
     private List<GameObject> enemySpawnAreaCorners = new List<GameObject>();
 
     //Events and Delegates 
     public event Action D_enemySpawned;
 
-    void Awake()
+    void OnEnable()
     {
         GameManager.OnGameStateChanged += FindPlayAreaRelatedReferences;
         GameManager.OnGameStateChanged += RunPlayAreaRelatedLogic;
-    }
-
-    void Start()
-    {
-        _enemy = Settings.Instance.enemy;
     }
 
     private void FindPlayAreaRelatedReferences(GameState state)
@@ -67,8 +60,14 @@ public class EnemySpawner : MonoBehaviour
         {
             if (hit.transform.gameObject.tag == "EnemySpawnArea")
             {
-                //Spawning a enemy
-                Instantiate(_enemy, hit.point + new Vector3(0.0f, 0.1f, 0.0f), Quaternion.identity);
+                //Activating an enemy from the object pool
+                GameObject _enemy = EnemyPool.SharedInstance.GetPooledObject();
+                if (_enemy != null)
+                {
+                    _enemy.transform.position = hit.point + new Vector3(0.0f, 0.1f, 0.0f);
+                    _enemy.transform.rotation = Quaternion.identity;
+                    _enemy.SetActive(true);
+                }
 
                 //Calling the D_enemySpawned delegate/event
                 D_enemySpawned();
