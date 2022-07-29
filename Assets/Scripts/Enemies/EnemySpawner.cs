@@ -11,9 +11,6 @@ public class EnemySpawner : MonoBehaviour
     private float _enemySpawnRate = 1.5f;
     private List<GameObject> enemySpawnAreaCorners = new List<GameObject>();
 
-    //Events and Delegates 
-    public event Action D_enemySpawned;
-
     void OnEnable()
     {
         GameManager.OnGameStateChanged += FindPlayAreaRelatedReferences;
@@ -68,9 +65,6 @@ public class EnemySpawner : MonoBehaviour
                     _enemy.transform.rotation = Quaternion.identity;
                     _enemy.SetActive(true);
                 }
-
-                //Calling the D_enemySpawned delegate/event
-                D_enemySpawned();
             }
         }
     }
